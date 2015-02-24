@@ -50,6 +50,9 @@ function StatsStream(el, line, screen, options) {
     this.screen = screen;
     this.x      = [];
     this.y      = [];
+    this.total_usage = []
+    this.system_cpu_usage = []
+    this.num_cpus = []
 };
 util.inherits(StatsStream, Writable);
 StatsStream.prototype._write = function (chunk, enc, cb) {
@@ -60,19 +63,23 @@ StatsStream.prototype._write = function (chunk, enc, cb) {
             console.log(chunk, "is not JSON");
             return cb();
         }
-
-        if (this.x.length > 10) {
-            this.x.shift();
-        }
-
-        if (this.y.length > 10) {
-            this.y.shift();
-        }
+        if (this.x.length > 10) { this.x.shift(); }
+        if (this.y.length > 10) { this.y.shift(); }
+        if (this.total_usage.length > 10) { this.total_usage.shift(); }
+        if (this.system_cpu_usage.length > 10) { this.system_cpu_usage.shift(); }
+        if (this.num_cpus.length > 10) { this.nump_cpus.shift(); }
 
         // append the chunk values
         var now = new Date();
         this.x.push(now.getUTCHours() + ':' + now.getUTCMinutes() + ':' + now.getUTCSeconds() + ':' + now.getUTCMilliseconds());
-        this.y.push(chunk.cpu_stats.cpu_usage.total_usage);
+        this.total_usage.push(chunk.cpu_stats.cpu_usage.total_usage);
+        this.system_cpu_usage.push(chunk.cpu_stats.system_cpu_usage);
+        this.num_cpus.push(chunk.cpu_stats.cpu_usage.percpu_usage.length);
+
+
+        if (this.total_usage.length > 1) {
+          this.y.push( ((this.total_usage.slice(-1)[0] - this.total_usage.slice(-2)[0]).toFixed(8) / (this.system_cpu_usage.slice(-1)[0] - this.system_cpu_usage.slice(-2)[0]).toFixed(8)) * this.num_cpus.slice(-1)[0] )
+        }
 
         // set the data
         this.line.setData(this.x, this.y);
