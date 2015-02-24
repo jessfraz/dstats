@@ -44,7 +44,7 @@ var parse = function(func){
 // get the containers
 parse(function(containers) {
     if (containers.length <= 0){
-        return cli.err("No containers.")
+        return cli.error("No containers.")
     }
 
     cli.debug("Got containers: " + containers);
