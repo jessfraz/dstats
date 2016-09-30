@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/jfrazelle/dstats"
+    "url": "github.com/jessfraz/dstats"
   },
   "author": "Jessie Frazelle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jfrazelle/dstats/issues"
+    "url": "https://github.com/jessfraz/dstats/issues"
   },
-  "homepage": "https://github.com/jfrazelle/dstats",
+  "homepage": "https://github.com/jessfraz/dstats",
   "dependencies": {
     "blessed": "0.0.38",
     "blessed-contrib": "0.0.4",
