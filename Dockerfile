@@ -1,4 +1,4 @@
-FROM iojs
+FROM mhart/alpine-node
 
 COPY . /usr/src
 
